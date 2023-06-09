@@ -1,6 +1,9 @@
 #funcao basicas
 
-from constantes import *
+from constantes import (CIMA, BAIXO, DIREITA, ESQUERDA, PEGAR, 
+                        estados_limite_cima, estados_limite_baixo, estados_limite_direita, estados_limite_esquerda,
+                        estados_pocos, estado_wumpus, estado_ouro,
+                        recompensa_poco, recompensa_pegar_ouro, recompensa_estado_vazio, recompensa_wumpus)
 
 def acao_permitida(estado_guerreiro, acao):
     if acao == CIMA and estado_guerreiro in estados_limite_cima:

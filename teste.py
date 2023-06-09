@@ -1,10 +1,11 @@
 # teste codigo de acoes
 
-from funcoes import (estados_finais, ACOES, acao_permitida, PEGAR, estado_ouro, novo_estado_guerreiro, recompensas)
+from constantes import (estados_iniciais, estados_finais, ACOES)
+from funcoes import (acao_permitida, PEGAR, estado_ouro, novo_estado_guerreiro, recompensas)
 import random
 import numpy as np
 
-qt_episodios = 10000
+qt_episodios = 100
 
 melhor_recompensa = 0
 melhor_episodio = 0
@@ -15,25 +16,28 @@ vitorias = 0
 q_table = np.zeros((16, 5))
 
 # Hyperparameters
-alpha = 0.9 #taxa de aprendizado
-gamma = 0.75 #fator de desconto
-epsilon = 1.0 #parametro que auxilia a decidir entre exploration e explotation 
+alpha = 0.1 #taxa de aprendizado
+gamma = 0.6 #fator de desconto
+epsilon = 0.5 #parametro que auxilia a decidir entre exploration e explotation 
               #e evitar overfitting (escolha da mesma rota sempre)
 epsilon_min = 0.01
 
 acoes_exploration = 0
 acoes_exploitation = 0
 
+#           inicio do treinamento
+
 for episodio in range(qt_episodios):
     recompensa_episodio = 0
     acoes_tomadas_episodio = 0
     estado_final_episodio = 0
-    estado_guerreiro = 0
+    estado_guerreiro = random.choice(estados_iniciais)
     estados_finais_episodios = estados_finais
     pegou_ouro = False
     todas_acoes = []
     todas_recompensas = []
-    todos_estados = [0]
+    todos_estados = []
+    todos_estados.append(estado_guerreiro)
 
     while estado_guerreiro not in estados_finais_episodios:
 
@@ -72,10 +76,10 @@ for episodio in range(qt_episodios):
             estado_guerreiro = proximo_estado_guerreiro
             estado_final_episodio = estado_guerreiro
 
-    if epsilon > epsilon_min:
-        epsilon = epsilon - 0.01
+#    if epsilon > epsilon_min:
+#        epsilon = epsilon - epsilon_min
     
-    if recompensa_episodio > 0:
+    if estado_ouro in estados_finais_episodios:
         vitorias = vitorias + 1
 
     if(recompensa_episodio > melhor_recompensa or melhor_episodio == 0):
@@ -87,8 +91,9 @@ for episodio in range(qt_episodios):
         todas_recompensas_melhor_episodio = todas_recompensas
         todos_estados_melhor_episodio = todos_estados
 
-print("------------------------------------------------")
+#           fim do treinamento
 
+print("------------------------------------------------")
 print("Episodio escolhido: ", melhor_episodio)
 print("Recompensa: ", melhor_recompensa)
 print("Acoes: ", qt_acoes_melhor_episodio)
@@ -105,16 +110,17 @@ print("% vitorias: ", vitorias/qt_episodios)
 print("Epsilon final: " , epsilon)
 print("Acoes exploration: ", acoes_exploration)
 print("Acoes exploitation: ", acoes_exploitation)
-
-
 print("------------------------------------------------")
 
+
+#               avaliar os valores de q_table
 acoes_tomadas_todos_episodios = 0
 recompensa_total_episodios = 0
+vitorias = 0
 
 for episodio in range(qt_episodios):
     estado_final_episodio = 0
-    estado_guerreiro = 0
+    estado_guerreiro = random.choice(estados_iniciais)
     recompensa_episodio = 0
     estados_finais_episodios = estados_finais
     pegou_ouro = False
@@ -133,7 +139,6 @@ for episodio in range(qt_episodios):
 
             recompensa_acao = recompensas(proximo_estado_guerreiro, acao)
             recompensa_episodio += recompensa_acao
-            recompensa_total_episodios += recompensa_acao
 
             q_value_antigo = q_table[estado_guerreiro, acao]
             maior_q_value_prox_estado = np.max(q_table[proximo_estado_guerreiro])
@@ -144,10 +149,16 @@ for episodio in range(qt_episodios):
             
             estado_guerreiro = proximo_estado_guerreiro
             estado_final_episodio = estado_guerreiro
+
+    recompensa_total_episodios += recompensa_episodio
     
-    if recompensa_episodio > 0:
+    if estado_ouro in estados_finais_episodios:
         vitorias = vitorias + 1
+
+print("------------------------------------------------")
 
 print(f"Results after {qt_episodios} episodes:")
 print(f"Average timesteps per episode: {acoes_tomadas_todos_episodios / qt_episodios}")
 print(f"Average reward per episode: {recompensa_total_episodios / qt_episodios}")
+print("Vitorias: ", vitorias)
+print("% vitorias: ", (vitorias/qt_episodios)*100)
