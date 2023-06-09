@@ -1,14 +1,15 @@
 # teste codigo de acoes
-from constantes import *
-from funcoes import *
+
+from funcoes import (estados_finais, ACOES, acao_permitida, PEGAR, estado_ouro, novo_estado_guerreiro, recompensas)
 import random
 
-qt_episodios = 50
+qt_episodios = 100
 
 melhor_recompensa = 0
 melhor_episodio = 0
 qt_acoes_melhor_episodio = 0
 estado_final_melhor_episodio = 0
+vitorias = 0
 
 for episodio in range(qt_episodios):
     recompensa_episodio = 0
@@ -43,6 +44,8 @@ for episodio in range(qt_episodios):
             
             estado_guerreiro = estado_guerreiro_novo
             estado_final_episodio = estado_guerreiro
+    if recompensa_episodio > 0:
+        vitorias += 1
 
     if(recompensa_episodio > melhor_recompensa or melhor_episodio == 0):
         melhor_recompensa = recompensa_episodio
@@ -63,3 +66,5 @@ print(todas_acoes_melhor_episodio)
 print(todas_recompensas_melhor_episodio)
 
 print("Estados finais: ", estados_finais)
+print("Vitorias: ", vitorias)
+print("% vitorias: ", vitorias/qt_episodios)
