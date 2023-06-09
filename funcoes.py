@@ -14,21 +14,17 @@ def acao_permitida(estado_guerreiro, acao):
     else:
         return True
 
-def novo_estado_guerreiro(estado_guerreiro, face_guerreiro, acao):
+def novo_estado_guerreiro(estado_guerreiro, acao):
     if acao == CIMA:
-        face_guerreiro = 1
-        return (estado_guerreiro+4), face_guerreiro
+        return (estado_guerreiro+4)
     elif acao == BAIXO:
-        face_guerreiro = 4
-        return (estado_guerreiro-4), face_guerreiro
+        return (estado_guerreiro-4)
     elif acao == DIREITA:
-        face_guerreiro = 3
-        return (estado_guerreiro+1), face_guerreiro
+        return (estado_guerreiro+1)
     elif acao == ESQUERDA:
-        face_guerreiro = 2
-        return (estado_guerreiro-1), face_guerreiro
+        return (estado_guerreiro-1)
     else: # guerreiro atirou ou 'pegou' o ouro
-        return estado_guerreiro, face_guerreiro
+        return estado_guerreiro
                 
 def recompensas(estado_guerreiro, acao):
     if estado_guerreiro in estados_pocos:

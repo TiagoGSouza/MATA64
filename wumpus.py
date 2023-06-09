@@ -16,13 +16,12 @@ for episodio in range(qt_episodios):
     estado_final_episodio = 0
     estado_guerreiro = 0
     estados_finais_episodios = estados_finais
-    face_guerreiro = 3
     pegou_ouro = False
     todas_acoes = []
     todas_recompensas = []
     todos_estados = [0]
 
-    while estado_guerreiro not in estados_finais:
+    while estado_guerreiro not in estados_finais_episodios:
 
         # exploration
         acao = random.choice(ACOES)
@@ -31,9 +30,9 @@ for episodio in range(qt_episodios):
             todas_acoes.append(acao)
 
             if(acao == PEGAR and estado_guerreiro == estado_ouro):
-                estados_finais.append(estado_ouro)
+                estados_finais_episodios.append(estado_ouro)
 
-            estado_guerreiro_novo, face_guerreiro = novo_estado_guerreiro(estado_guerreiro, face_guerreiro, acao)
+            estado_guerreiro_novo = novo_estado_guerreiro(estado_guerreiro, acao)
 
             todos_estados.append(estado_guerreiro_novo)
 

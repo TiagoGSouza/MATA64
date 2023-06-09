@@ -12,8 +12,6 @@ estados_finais = [2, 8, 10, 15]
 
 wumpus_vivo = True
 
-global face_guerreiro
-face_guerreiro = 3 # o guerreiro inicia olhando para a direita
 global estado_guerreiro
 estado_guerreiro = 0
 global flechas_guerreiro
@@ -24,7 +22,6 @@ BAIXO = 1
 DIREITA = 2
 ESQUERDA = 3
 PEGAR = 4
-#ATIRAR = 5
 ACOES = [CIMA, BAIXO, DIREITA, ESQUERDA, PEGAR]
 
 recompensa_estado_vazio = (-1)
