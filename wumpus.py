@@ -8,76 +8,59 @@ qt_episodios = 50
 melhor_recompensa = 0
 melhor_episodio = 0
 qt_acoes_melhor_episodio = 0
-flechas_guerreiro = 1
-
-todas_acoes = []
-todas_recompensas = []
-todos_estados = []
+estado_final_melhor_episodio = 0
 
 for episodio in range(qt_episodios):
-# if(True):
     recompensa_episodio = 0
     acoes_tomadas_episodio = 0
     estado_final_episodio = 0
     estado_guerreiro = 0
+    estados_finais_episodios = estados_finais
+    face_guerreiro = 3
     pegou_ouro = False
-    flechas_guerreiro = 1
-    wumpus_vivo = True
-    todas_acoes.clear()
-    todas_recompensas.clear()
-    todos_estados.clear()
-
+    todas_acoes = []
+    todas_recompensas = []
     todos_estados = [0]
 
     while estado_guerreiro not in estados_finais:
-        
 
         # exploration
         acao = random.choice(ACOES)
-        acoes_tomadas_episodio += 1
-        todas_acoes.append(acao)
-
-        if(acao == PEGAR and estado_guerreiro == estado_ouro):
-            pegou_ouro == True
-
-        # print("Acao: ", acao)
-        # print("Estado inicial: ", estado_guerreiro)
-        # print("Face guerreiro inicial: ", face_guerreiro)
-
         if acao_permitida(estado_guerreiro, acao):
-            estado_guerreiro, face_guerreiro = novo_estado_guerreiro(estado_guerreiro, face_guerreiro, acao)
+            acoes_tomadas_episodio += 1
+            todas_acoes.append(acao)
 
-        todos_estados.append(estado_guerreiro)
+            if(acao == PEGAR and estado_guerreiro == estado_ouro):
+                estados_finais.append(estado_ouro)
 
-        recompensa_acao, wumpus_vivo = recompensas(estado_guerreiro, acao, flechas_guerreiro, wumpus_vivo)
-        todas_recompensas.append(recompensa_acao)
-        
-        if not wumpus_vivo:
-            if estado_wumpus in estados_finais:
-                estados_finais.remove(estado_wumpus)
+            estado_guerreiro_novo, face_guerreiro = novo_estado_guerreiro(estado_guerreiro, face_guerreiro, acao)
 
-        recompensa_episodio += recompensa_acao
+            todos_estados.append(estado_guerreiro_novo)
 
-        if acao == ATIRAR:
-            flechas_guerreiro = 0
-
-        if estado_guerreiro == estado_ouro and acao == PEGAR:
-            estados_finais.append(estado_ouro)
-        estado_final_episodio = estado_guerreiro
-
+            recompensa_acao = recompensas(estado_guerreiro_novo, acao)
+            todas_recompensas.append(recompensa_acao)
+            
+            recompensa_episodio += recompensa_acao
+            
+            estado_guerreiro = estado_guerreiro_novo
+            estado_final_episodio = estado_guerreiro
 
     if(recompensa_episodio > melhor_recompensa or melhor_episodio == 0):
         melhor_recompensa = recompensa_episodio
+        estado_final_melhor_episodio = estado_final_episodio
         melhor_episodio = episodio
         qt_acoes_melhor_episodio = acoes_tomadas_episodio
         todas_acoes_melhor_episodio = todas_acoes
         todas_recompensas_melhor_episodio = todas_recompensas
         todos_estados_melhor_episodio = todos_estados
 
-# print("Episodio: ", melhor_episodio)
+print("Episodio escolhido: ", melhor_episodio)
 print("Recompensa: ", melhor_recompensa)
 print("Acoes: ", qt_acoes_melhor_episodio)
-print("Estado final: ", estado_final_episodio)
-print(todas_acoes)
-print(todos_estados)
-print(todas_recompensas)
+print("Estado final: ", estado_final_melhor_episodio)
+
+print(todos_estados_melhor_episodio)
+print(todas_acoes_melhor_episodio)
+print(todas_recompensas_melhor_episodio)
+
+print("Estados finais: ", estados_finais)

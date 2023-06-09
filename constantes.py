@@ -19,13 +19,13 @@ estado_guerreiro = 0
 global flechas_guerreiro
 flechas_guerreiro = 1
 
-CIMA = 1
-BAIXO = 2
-DIREITA = 3
-ESQUERDA = 4
-ATIRAR = 5
-PEGAR = 6
-ACOES = [CIMA, BAIXO, DIREITA, ESQUERDA, ATIRAR, PEGAR]
+CIMA = 0
+BAIXO = 1
+DIREITA = 2
+ESQUERDA = 3
+PEGAR = 4
+#ATIRAR = 5
+ACOES = [CIMA, BAIXO, DIREITA, ESQUERDA, PEGAR]
 
 recompensa_estado_vazio = (-1)
 recompensa_poco = (-1000)
