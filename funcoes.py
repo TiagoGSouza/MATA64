@@ -23,7 +23,7 @@ def novo_estado_guerreiro(estado_guerreiro, acao):
         return (estado_guerreiro+1)
     elif acao == ESQUERDA:
         return (estado_guerreiro-1)
-    else: # guerreiro atirou ou 'pegou' o ouro
+    else: # PEGAR -> o guerreiro fica no mesmo lugar
         return estado_guerreiro
                 
 def recompensas(estado_guerreiro, acao):

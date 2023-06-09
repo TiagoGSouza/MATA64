@@ -44,8 +44,10 @@ for episodio in range(qt_episodios):
             
             estado_guerreiro = estado_guerreiro_novo
             estado_final_episodio = estado_guerreiro
+    
     if recompensa_episodio > 0:
-        vitorias += 1
+        print("Ganhou")
+        vitorias = vitorias + 1
 
     if(recompensa_episodio > melhor_recompensa or melhor_episodio == 0):
         melhor_recompensa = recompensa_episodio
