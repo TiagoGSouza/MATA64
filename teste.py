@@ -15,17 +15,22 @@ vitorias = 0
 
 q_table = np.zeros((16, 5))
 
-# Hyperparameters
-alpha = 0.1 #taxa de aprendizado
-gamma = 0.6 #fator de desconto
-epsilon = 0.5 #parametro que auxilia a decidir entre exploration e explotation 
+# Hiperparametros
+alpha = 0.83 #taxa de aprendizado
+gamma = 0.95 #fator de desconto
+epsilon = 0.8 #parametro que auxilia a decidir entre exploration e explotation 
               #e evitar overfitting (escolha da mesma rota sempre)
 epsilon_min = 0.01
+
+tolerancia = 0.000001
 
 acoes_exploration = 0
 acoes_exploitation = 0
 
+
 #           inicio do treinamento
+
+episodios_executados = 0
 
 for episodio in range(qt_episodios):
     recompensa_episodio = 0
@@ -38,6 +43,7 @@ for episodio in range(qt_episodios):
     todas_recompensas = []
     todos_estados = []
     todos_estados.append(estado_guerreiro)
+    convergiu = False
 
     while estado_guerreiro not in estados_finais_episodios:
 
@@ -76,8 +82,14 @@ for episodio in range(qt_episodios):
             estado_guerreiro = proximo_estado_guerreiro
             estado_final_episodio = estado_guerreiro
 
-#    if epsilon > epsilon_min:
-#        epsilon = epsilon - epsilon_min
+            dif = abs(novo_q_value - q_value_antigo)
+
+            if dif < tolerancia:
+                convergiu = True
+                break
+
+
+    episodios_executados = episodios_executados + 1
     
     if estado_ouro in estados_finais_episodios:
         vitorias = vitorias + 1
@@ -91,9 +103,16 @@ for episodio in range(qt_episodios):
         todas_recompensas_melhor_episodio = todas_recompensas
         todos_estados_melhor_episodio = todos_estados
 
+    if convergiu:
+        break
+
+    if epsilon > epsilon_min:
+        epsilon = epsilon - epsilon_min
+
 #           fim do treinamento
 
 print("------------------------------------------------")
+print("Episodios executados: ", episodios_executados)
 print("Episodio escolhido: ", melhor_episodio)
 print("Recompensa: ", melhor_recompensa)
 print("Acoes: ", qt_acoes_melhor_episodio)
@@ -105,7 +124,7 @@ print(todas_recompensas_melhor_episodio)
 
 print("Estados finais: ", estados_finais)
 print("Vitorias: ", vitorias)
-print("% vitorias: ", vitorias/qt_episodios)
+print("% vitorias: ", vitorias*100/qt_episodios)
 
 print("Epsilon final: " , epsilon)
 print("Acoes exploration: ", acoes_exploration)
@@ -119,6 +138,7 @@ recompensa_total_episodios = 0
 vitorias = 0
 
 for episodio in range(qt_episodios):
+
     estado_final_episodio = 0
     estado_guerreiro = random.choice(estados_iniciais)
     recompensa_episodio = 0
