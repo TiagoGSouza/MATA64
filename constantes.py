@@ -11,8 +11,6 @@ estados_pocos = [2, 10, 15]
 estados_finais = [2, 8, 10, 15]
 estados_iniciais = [0, 1, 3, 4, 5, 6, 7, 11, 12, 13, 14]
 
-wumpus_vivo = True
-
 global estado_guerreiro
 
 CIMA = 0
@@ -25,4 +23,5 @@ ACOES = [CIMA, BAIXO, DIREITA, ESQUERDA, PEGAR]
 recompensa_estado_vazio = -1
 recompensa_poco = -1000
 recompensa_wumpus = -1000
+recompensa_acao_nao_permitida = -1000
 recompensa_pegar_ouro = 1000
