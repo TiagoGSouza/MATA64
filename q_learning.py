@@ -1,7 +1,7 @@
 # teste codigo de acoes
 
 from constantes import (estados_iniciais, estados_finais, recompensa_acao_nao_permitida, ACOES)
-from funcoes import (acao_permitida, PEGAR, estado_ouro, novo_estado_guerreiro, recompensas)
+from funcoes import (acao_permitida, PEGAR, estado_ouro, novo_estado_guerreiro, recompensas, imprimir)
 import random
 import numpy as np
 
@@ -14,8 +14,8 @@ q_table = np.zeros((16, 5))
 
 # Hiperparametros
 alpha = 0.8 #taxa de aprendizado
-gamma = 0.8 #fator de desconto
-epsilon = 0.9 #parametro que auxilia a decidir entre exploration e explotation 
+gamma = 0.7 #fator de desconto
+epsilon = 0.8 #parametro que auxilia a decidir entre exploration e explotation 
               #e evitar overfitting (escolha da mesma rota sempre)
 epsilon_min = 0.01
 
@@ -109,15 +109,18 @@ print("--------------Fim do Treinamento--------------------------")
 acoes_tomadas_todos_episodios = 0
 recompensa_total_episodios = 0
 vitorias = 0
+estados_visualizacao = []
 
 for episodio in range(qt_episodios):
 
     estado_guerreiro = random.choice(estados_iniciais)
     recompensa_episodio = 0
     estados_finais_episodios.clear()
+    estados_visualizacao.clear()
     estados_finais_episodios = estados_finais.copy()
 
     while estado_guerreiro not in estados_finais_episodios:
+        estados_visualizacao.append(estado_guerreiro)
         acao = np.argmax(q_table[estado_guerreiro])
 
         if acao_permitida(estado_guerreiro, acao):
@@ -139,6 +142,7 @@ for episodio in range(qt_episodios):
             q_table[estado_guerreiro, acao] = novo_q_value
             
             estado_guerreiro = proximo_estado_guerreiro
+            
 
     recompensa_total_episodios += recompensa_episodio
 
@@ -152,3 +156,4 @@ print(f"Quantidade media de acoes tomadas por episodio: {acoes_tomadas_todos_epi
 print(f"Recompensa media por episodio: {recompensa_total_episodios / qt_episodios}")
 print("Vitorias: ", vitorias)
 print("% vitorias: ", (vitorias/qt_episodios)*100)
+imprimir(estados_visualizacao)

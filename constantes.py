@@ -25,3 +25,8 @@ recompensa_poco = -1000
 recompensa_wumpus = -1000
 recompensa_acao_nao_permitida = -1000
 recompensa_pegar_ouro = 1000
+
+mapa = [[12, 13, 14, 15],
+          [8, 9, 10, 11],
+          [4, 5, 6, 7],
+          [0, 1, 2, 3]]
